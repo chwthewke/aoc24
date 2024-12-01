@@ -14,17 +14,21 @@ enablePlugins( FormatPlugin, DependenciesPlugin )
 
 val `aoc24-core` = project
   .in( file( "core" ) )
-  .settings( libraryDependencies ++= cats ++ catsEffect )
+  .settings( libraryDependencies ++= kindProjector )
+  .settings( libraryDependencies ++= cats ++ catsEffect ++ catsParse )
   .enablePlugins( SbtBuildInfoPlugin, ScalacPlugin )
 
 val `aoc24-app` = project
   .in( file( "app" ) )
   .settings( Compile / run / fork := true )
+  .settings( libraryDependencies ++= kindProjector )
+  .settings( libraryDependencies ++= fs2 )
   .dependsOn( `aoc24-core` )
   .enablePlugins( SbtBuildInfoPlugin, ScalacPlugin )
 
 val `aoc24-tests` = project
   .in( file( "tests" ) )
+  .settings( libraryDependencies ++= kindProjector )
   .settings( libraryDependencies ++= scalatest ++ scalacheck )
   .dependsOn( `aoc24-core`, `aoc24-app` )
   .enablePlugins( ScalacPlugin )

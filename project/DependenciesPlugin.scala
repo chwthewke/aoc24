@@ -16,11 +16,11 @@ object DependenciesPlugin extends AutoPlugin {
     implicit def ToGroupOps( deps: Deps ): GroupOps = new GroupOps( deps )
 
     val kindProjector: Deps =
-      Seq( compilerPlugin( "org.typelevel" %% "kind-projector" % "0.13.2" cross CrossVersion.full ) )
+      Seq( compilerPlugin( "org.typelevel" %% "kind-projector" % "0.13.3" cross CrossVersion.full ) )
 
     val betterMonadicFor: Deps = Seq( compilerPlugin( "com.olegpy" %% "better-monadic-for" % "0.3.1" ) )
 
-    val catsVersion         = "2.10.0"
+    val catsVersion         = "2.12.0"
     val cats: Deps          = "org.typelevel" %% Seq( "cats-core", "cats-kernel" ) % catsVersion
     val catsFree: Deps      = Seq( "org.typelevel" %% "cats-free" % catsVersion )
     val catsMtl: Deps       = Seq( "org.typelevel" %% "cats-mtl" % "1.4.0" )
@@ -28,7 +28,7 @@ object DependenciesPlugin extends AutoPlugin {
     val kittens: Deps       = Seq( "org.typelevel" %% "kittens" % "3.1.0" )
     val alleycatsCore: Deps = Seq( "org.typelevel" %% "alleycats-core" % catsVersion )
 
-    val catsEffect: Deps = "org.typelevel" %% Seq( "cats-effect", "cats-effect-kernel", "cats-effect-std" ) % "3.5.2"
+    val catsEffect: Deps = "org.typelevel" %% Seq( "cats-effect", "cats-effect-kernel", "cats-effect-std" ) % "3.5.7"
 
     val fs2: Deps = "co.fs2" %% Seq( "fs2-core", "fs2-io" ) % "3.9.3"
 
@@ -142,13 +142,13 @@ object DependenciesPlugin extends AutoPlugin {
     val flywayCore: Deps = Seq( "org.flywaydb"   % "flyway-core" % "10.1.0" )
 
     val scalatest: Deps = Seq(
-      "org.scalatest"     %% "scalatest"       % "3.2.17",
-      "org.scalatestplus" %% "scalacheck-1-17" % "3.2.17.0"
+      "org.scalatest"     %% "scalatest"       % "3.2.19",
+      "org.scalatestplus" %% "scalacheck-1-18" % "3.2.19.0"
     )
 
     val scalacheck: Deps =
       Seq(
-        "org.scalacheck"    %% "scalacheck"      % "1.17.0",
+        "org.scalacheck"    %% "scalacheck"      % "1.18.1",
         "io.chrisdavenport" %% "cats-scalacheck" % "0.3.2"
       )
 

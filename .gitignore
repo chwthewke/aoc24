@@ -2,6 +2,7 @@ bin/
 target/
 .bloop/
 .bsp/
+null/
 .cache*
 .idea
 .idea_modules
