@@ -15,7 +15,7 @@ object Main extends IOApp {
   val console: Console[IO] = Console[IO]
 
   val puzzles: Map[Int, RunnablePuzzle] =
-    Vector[RunnablePuzzle]( Aoc1, Aoc2 )
+    Vector[RunnablePuzzle]( Aoc1, Aoc2, Aoc3 )
       .map( p => ( p.puzzle.n, p ) )
       .toMap
 
