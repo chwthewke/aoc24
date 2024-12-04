@@ -6,6 +6,7 @@ import cats.parse.Parser
 import cats.syntax.option._
 import cats.syntax.traverse._
 import cats.syntax.show._
+import org.scalactic.source.Position
 import org.scalactic.TypeCheckedTripleEquals
 import org.scalatest.Inside
 import org.scalatest.matchers.must.Matchers
@@ -27,14 +28,17 @@ abstract class PuzzleSpec( puzzle: RunnablePuzzle, expectedBasic: String, expect
   private def loadInput( runBonus: Boolean ): IO[Input] =
     Loader.samples.load[IO]( puzzle.puzzle, runBonus )
 
+  private def decl( name: String, expected: String )( test: => Any )( implicit pos: Position ): Unit =
+    if (expected == "") name ignore test else name in test
+
   "The basic problem" should {
-    "produce the expected result" in {
+    decl( "produce the expected result", expectedBasic ) {
       runPuzzle( bonus = false ).unsafeRunSync() must ===( expectedBasic )
     }
   }
 
   "The bonus problem" should {
-    "produce the expected result" in {
+    decl( "produce the expected result", expectedBonus ) {
       runPuzzle( bonus = true ).unsafeRunSync() must ===( expectedBonus )
     }
   }
