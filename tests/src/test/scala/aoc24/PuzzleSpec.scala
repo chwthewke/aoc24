@@ -25,7 +25,7 @@ abstract class PuzzleSpec( puzzle: RunnablePuzzle, expectedBasic: String, expect
     loadInput( bonus )
       .flatMap( in => if (bonus) runBonus( puzzle, in ) else run( puzzle, in ) )
 
-  private def loadInput( runBonus: Boolean ): IO[Input] =
+  protected def loadInput( runBonus: Boolean = false ): IO[Input] =
     Loader.samples.load[IO]( puzzle.puzzle, runBonus )
 
   private def decl( name: String, expected: String )( test: => Any )( implicit pos: Position ): Unit =
