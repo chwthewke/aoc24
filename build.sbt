@@ -15,7 +15,7 @@ enablePlugins( FormatPlugin, DependenciesPlugin )
 val `aoc24-core` = project
   .in( file( "core" ) )
   .settings( libraryDependencies ++= kindProjector )
-  .settings( libraryDependencies ++= cats ++ catsEffect ++ catsParse ++ enumeratum ++ kittens ++ fs2 )
+  .settings( libraryDependencies ++= cats ++ catsEffect ++ catsParse ++ enumeratum ++ kittens ++ fs2 ++ algebra )
   .enablePlugins( SbtBuildInfoPlugin, ScalacPlugin )
 
 val `aoc24-app` = project
