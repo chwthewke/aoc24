@@ -13,7 +13,7 @@ class Aoc6Spec extends PuzzleSpec( Aoc6, "41", "6" ) with Matchers {
   }
 
   def createsLoop( pos: Aoc6.Pos ): IO[Boolean] =
-    loadInput()
+    loadSampleInput()
       .flatMap( input => parseGrid( input ).leftMap( new RuntimeException( _ ) ).liftTo[IO] )
       .map( _.createsLoop( pos ) )
 
