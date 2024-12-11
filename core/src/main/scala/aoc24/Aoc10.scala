@@ -75,12 +75,8 @@ object Aoc10 extends Puzzle[IO]( 10 ) {
           pathsBack.filter { case ( p, _ ) => get( p ).contains( 9 ) }.unorderedFold
       }
 
-    def ratings: IO[Int] =
-      Stream
-        .emits[IO, Pos]( trailheads )
-        .parEvalMapUnordered( 8 )( th => IO.delay( ratingRec( Map.empty, Vector( ( th, None, 0 ) ) ) ) )
-        .compile
-        .foldMonoid
+    def ratings: Int =
+      trailheads.foldMap( th => ratingRec( Map.empty, Vector( ( th, None, 0 ) ) ) )
 
   }
 
@@ -107,6 +103,6 @@ object Aoc10 extends Puzzle[IO]( 10 ) {
 
   override def runBonus( input: Input ): IO[String] =
     parseGrid( input )
-      .flatMap( _.ratings )
+      .map( _.ratings )
       .map( _.toString )
 }
