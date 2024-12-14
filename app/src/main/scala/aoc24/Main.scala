@@ -7,7 +7,6 @@ import cats.effect.IOApp
 import cats.effect.std.Console
 import cats.syntax.either._
 import cats.syntax.show._
-import scala.concurrent.duration._
 
 object Main extends IOApp {
 
@@ -15,7 +14,7 @@ object Main extends IOApp {
   val console: Console[IO] = Console[IO]
 
   val puzzles: Map[Int, RunnablePuzzle] =
-    Vector[RunnablePuzzle]( Aoc1, Aoc2, Aoc3, Aoc4, Aoc5, Aoc6, Aoc7, Aoc8, Aoc9, Aoc10, Aoc11, Aoc12, Aoc13 )
+    Vector[RunnablePuzzle]( Aoc1, Aoc2, Aoc3, Aoc4, Aoc5, Aoc6, Aoc7, Aoc8, Aoc9, Aoc10, Aoc11, Aoc12, Aoc13, Aoc14 )
       .map( p => ( p.puzzle.n, p ) )
       .toMap
 
@@ -26,7 +25,10 @@ object Main extends IOApp {
     for {
       puzzle <- puzzles.get( n ).toRight( new RuntimeException( s"Puzzle #$n not found" ) ).liftTo[IO]
       input  <- loadInput( puzzle.puzzle, useSample, runBonus )
-      result <- if (runBonus) puzzle.runBonus( input ) else puzzle.run( input )
+      result <- (
+                 if (runBonus) puzzle.runBonus( input, IsSample( useSample ) )
+                 else puzzle.run( input, IsSample( useSample ) )
+               ).timeout( puzzle.puzzle.timeout )
     } yield result
 
   override def run( args: List[String] ): IO[ExitCode] =
@@ -38,7 +40,7 @@ object Main extends IOApp {
         for {
           n      <- Either.catchNonFatal( code2.toInt ).liftTo[IO]
           s      <- clock.monotonic
-          result <- runPuzzle( n, useSample, runBonus ).timeout( 1.minute ).attempt
+          result <- runPuzzle( n, useSample, runBonus ).attempt
           e      <- clock.monotonic
           _      <- console.errorln( show"[${(e - s).toMillis} ms]" )
           code <- result.fold(

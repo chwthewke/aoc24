@@ -33,11 +33,15 @@ object DependenciesPlugin extends AutoPlugin {
     val fs2: Deps = "co.fs2" %% Seq( "fs2-core", "fs2-io" ) % "3.9.3"
 
     val http4sVersion           = "0.23.24"
-    val http4s: Deps            = "org.http4s" %% Seq( "http4s-dsl", "http4s-core", "http4s-circe" ) % http4sVersion
+    val http4s: Deps            = "org.http4s" %% Seq( "http4s-dsl", "http4s-core" ) % http4sVersion
+    val http4sCirce: Deps       = Seq( "org.http4s" %% "http4s-circe" % http4sVersion )
     val http4sClientCore: Deps  = Seq( "org.http4s" %% "http4s-client" % http4sVersion )
     val http4sServerCore: Deps  = Seq( "org.http4s" %% "http4s-server" % http4sVersion )
     val http4sEmberServer: Deps = Seq( "org.http4s" %% "http4s-ember-server" % http4sVersion )
     val http4sEmberClient: Deps = Seq( "org.http4s" %% "http4s-ember-client" % http4sVersion )
+
+    val scalatags: Deps       = Seq( "com.lihaoyi" %% "scalatags"        % "0.13.1" )
+    val http4sScalatags: Deps = Seq( "org.http4s"  %% "http4s-scalatags" % "0.25.2" )
 
     val monocleVersion       = "3.2.0"
     val monocle: Deps        = "dev.optics" %% Seq( "monocle-core", "monocle-macro" ) % monocleVersion
@@ -66,7 +70,7 @@ object DependenciesPlugin extends AutoPlugin {
 
     val spire: Deps    = Seq( "org.typelevel" %% "spire"         % "0.18.0" )
     val algebird: Deps = Seq( "com.twitter"   %% "algebird-core" % "0.13.10" )
-    val algebra: Deps  = Seq( "org.typelevel" %% "algebra"       % "2.10.0" )
+    val algebra: Deps  = Seq( "org.typelevel" %% "algebra"       % "2.12.0" )
 
     val breeze: Deps = "org.scalanlp" %% Seq( "breeze", "breeze-natives" ) % "2.1.0"
     val breezeDependencyOverrides: Deps =
@@ -141,6 +145,13 @@ object DependenciesPlugin extends AutoPlugin {
     val postgresql: Deps = Seq( "org.postgresql" % "postgresql"  % "42.7.0" )
     val flywayCore: Deps = Seq( "org.flywaydb"   % "flyway-core" % "10.1.0" )
 
+    val scrimageVersion: String = "4.3.0"
+    val scrimage: Deps =
+      Seq(
+        "com.sksamuel.scrimage" % "scrimage-format-png" % scrimageVersion,
+        "com.sksamuel.scrimage" %% "scrimage-scala"     % scrimageVersion
+      )
+
     val scalatest: Deps = Seq(
       "org.scalatest"     %% "scalatest"       % "3.2.19",
       "org.scalatestplus" %% "scalacheck-1-18" % "3.2.19.0"
@@ -182,6 +193,8 @@ object DependenciesPlugin extends AutoPlugin {
       http4sEmberServer ++
       http4sClientCore ++
       http4sEmberClient ++
+      scalatags ++
+      scrimage ++
       monocle ++
       monocleState ++
       monocleGeneric ++

@@ -19,12 +19,14 @@ abstract class PuzzleSpec( puzzle: RunnablePuzzle, expectedBasic: String, expect
     with TypeCheckedTripleEquals
     with Inside {
 
-  def run( puzzle: RunnablePuzzle, input: Input ): IO[String]      = puzzle.run( input )
-  def runBonus( puzzle: RunnablePuzzle, input: Input ): IO[String] = puzzle.runBonus( input )
+  def run( puzzle: RunnablePuzzle, input: Input, isSample: IsSample = IsSample( true ) ): IO[String] =
+    puzzle.run( input, isSample )
+  def runBonus( puzzle: RunnablePuzzle, input: Input, isSample: IsSample = IsSample( true ) ): IO[String] =
+    puzzle.runBonus( input, isSample )
 
-  def runPuzzle( bonus: Boolean ): IO[String] =
-    loadSampleInput( bonus )
-      .flatMap( in => if (bonus) runBonus( puzzle, in ) else run( puzzle, in ) )
+  def runPuzzle( bonus: Boolean, isSample: IsSample = IsSample( true ) ): IO[String] =
+    (if (isSample.value) loadSampleInput( bonus ) else loadRealInput( bonus ))
+      .flatMap( in => if (bonus) runBonus( puzzle, in, isSample ) else run( puzzle, in, isSample ) )
 
   protected def loadSampleInput( runBonus: Boolean = false ): IO[Input] =
     Loader.samples.load[IO]( puzzle.puzzle, runBonus )

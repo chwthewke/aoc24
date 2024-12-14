@@ -12,9 +12,9 @@ abstract class RunnablePuzzle {
 
   final def n: Int = puzzle.n
 
-  final def run( input: Input ): IO[String] = runner.run( puzzle.run( input ) )
+  final def run( input: Input, isSample: IsSample ): IO[String] = runner.run( puzzle.run( input ), isSample )
 
-  final def runBonus( input: Input ): IO[String] = runner.run( puzzle.runBonus( input ) )
+  final def runBonus( input: Input, isSample: IsSample ): IO[String] = runner.run( puzzle.runBonus( input ), isSample )
 }
 
 object RunnablePuzzle {
