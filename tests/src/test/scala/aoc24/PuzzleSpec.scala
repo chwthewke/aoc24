@@ -83,4 +83,9 @@ abstract class PuzzleSpec( puzzle: RunnablePuzzle, expectedBasic: String, expect
   def parseTheRawSample[A]( parser: Parser[A], bonus: Boolean = false ): Unit =
     parseTheSample[A, A]( ( input, parser ) => parser.parseAll( input.raw ), parser, bonus )
 
+  def parseTheRawSampleAs[A]( parser: Parser[A], bonus: Boolean = false )(
+      assertion: PartialFunction[A, Assertion]
+  ): Unit =
+    parseTheSampleAs[A, A]( ( input, parser ) => parser.parseAll( input.raw ), parser, bonus )( assertion )
+
 }
