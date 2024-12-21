@@ -33,7 +33,8 @@ object Main extends IOApp {
       Aoc16,
       Aoc17,
       Aoc18,
-      Aoc19
+      Aoc19,
+      Aoc20
     ).map( p => ( p.puzzle.n, p ) ).toMap
 
   def loadInput[G[_]]( puzzle: Puzzle[G], useSample: Boolean, runBonus: Boolean ): IO[Input] =
