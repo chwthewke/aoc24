@@ -21,7 +21,7 @@ object Aoc4 extends Puzzle.Pure( 4 ) {
           case rowsWindow if rowsWindow.size == size =>
             rowsWindow.transpose.sliding( size ).collect {
               case square if square.size == size =>
-                (0 until size).map( i => square( i )( i ) ).toVector
+                ( 0 until size ).map( i => square( i )( i ) ).toVector
             }
         }
         .flatten
@@ -90,8 +90,8 @@ object Aoc4 extends Puzzle.Pure( 4 ) {
 
     def countXmases: Int = {
       val indices: Iterable[( Int, Int )] = for {
-        j <- 1 until (height - 1)
-        i <- 1 until (width - 1)
+        j <- 1 until ( height - 1 )
+        i <- 1 until ( width - 1 )
       } yield ( i, j )
 
       indices.count { case ( i, j ) => xmasAt( i, j ) }

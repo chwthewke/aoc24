@@ -15,9 +15,9 @@ object Loader {
     class LoadPartiallyApplied[F[_]] {
       def apply[G[_]]( puzzle: Puzzle[G], runBonus: Boolean )( implicit F: Sync[F] ): F[Input] =
         if (runBonus)
-          loadInput[F]( s"${puzzle.n}.bonus.in", Some( s"${puzzle.n}.in" ) )
+          loadInput[F]( s"${puzzle.puzzleNumber}.bonus.in", Some( s"${puzzle.puzzleNumber}.in" ) )
         else
-          loadInput[F]( s"${puzzle.n}.in" )
+          loadInput[F]( s"${puzzle.puzzleNumber}.in" )
     }
 
     def load[F[_]]: LoadPartiallyApplied[F] = new LoadPartiallyApplied[F]
@@ -35,5 +35,5 @@ object Loader {
   }
 
   val samples: Source = new Source { override val source: String = "samples" }
-  val inputs: Source  = new Source { override val source: String = "inputs"  }
+  val inputs: Source  = new Source { override val source: String = "inputs" }
 }

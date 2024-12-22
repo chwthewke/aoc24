@@ -85,7 +85,7 @@ object Aoc9 extends Puzzle[Either[String, *]]( 9 ) {
       filePositions
         .foldMap {
           case ( p, File( id, s ) ) =>
-            id.toLong * ((s.toLong * (2 * p.toLong + s.toLong - 1)) / 2)
+            id.toLong * ( ( s.toLong * ( 2 * p.toLong + s.toLong - 1 ) ) / 2 )
         }
 
     def compactWholeFilesAndChecksum: Long =

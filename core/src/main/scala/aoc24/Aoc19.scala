@@ -18,10 +18,10 @@ object Aoc19 extends Puzzle[IO]( 19 ) {
       }
 
     def prefixesOf( s: String ): Set[Int] =
-      (s.headOption match {
+      ( s.headOption match {
         case None      => Set.empty[Int]
         case Some( c ) => byChar.get( c ).foldMap( t => t.prefixesOf( s.drop( 1 ) ).map( _ + 1 ) )
-      }) ++ Option.when( matches )( 0 )
+      } ) ++ Option.when( matches )( 0 )
 
     def canMake( s: String ): Boolean = {
       @tailrec
@@ -34,7 +34,7 @@ object Aoc19 extends Puzzle[IO]( 19 ) {
               go( seen, open.drop( 1 ) )
             else {
               val next: Set[Int]       = prefixesOf( s.drop( p ) ).map( _ + p )
-              val newOpen: Vector[Int] = (next.toVector.sorted.reverse ++ open.drop( 1 )).distinct
+              val newOpen: Vector[Int] = ( next.toVector.sorted.reverse ++ open.drop( 1 ) ).distinct
               go( seen.incl( p ), newOpen )
             }
         }
@@ -96,7 +96,7 @@ object Aoc19 extends Puzzle[IO]( 19 ) {
   }
 
   object parsers {
-    def endl: Parser[Unit] = Rfc5234.lf | (Rfc5234.cr ~ Rfc5234.lf.rep0).void
+    def endl: Parser[Unit] = Rfc5234.lf | ( Rfc5234.cr ~ Rfc5234.lf.rep0 ).void
 
     val stripe: Parser[Char]  = Parser.charIn( "wubrg" )
     val towel: Parser[String] = stripe.rep.string

@@ -25,7 +25,7 @@ object Aoc1 extends Puzzle[Either[String, *]]( 1 ) {
   def sumOfDistances( data: Data ): Option[Int] = {
     data.left.sorted
       .align( data.right.sorted )
-      .foldMapM( _.onlyBoth.map { case ( x, y ) => (x - y).abs } )
+      .foldMapM( _.onlyBoth.map { case ( x, y ) => ( x - y ).abs } )
   }
 
   def similarity( data: Data ): Int = {

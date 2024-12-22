@@ -66,8 +66,8 @@ object Aoc5 extends Puzzle[Either[String, *]]( 5 ) {
 
     val endl: Parser[Unit] = Rfc5234.crlf | Rfc5234.lf
     val instructions: Parser[Instructions] =
-      ( orderingRule.repSep( endl ), endl.rep( 2 ), update.repSep( endl ) ).mapN(
-        ( rules, _, updates ) => Instructions( rules.toNev.toVector.toSet, updates.toNev.toVector )
+      ( orderingRule.repSep( endl ), endl.rep( 2 ), update.repSep( endl ) ).mapN( ( rules, _, updates ) =>
+        Instructions( rules.toNev.toVector.toSet, updates.toNev.toVector )
       ) <* endl.rep0
   }
 
@@ -78,21 +78,19 @@ object Aoc5 extends Puzzle[Either[String, *]]( 5 ) {
 
   override def run( input: Input ): Either[String, String] =
     parseInstructions( input )
-      .map(
-        instructions =>
-          instructions.updates.filter( instructions.isUpdateValid ).foldMap( u => middlePageNumber( u.toNev ) )
+      .map( instructions =>
+        instructions.updates.filter( instructions.isUpdateValid ).foldMap( u => middlePageNumber( u.toNev ) )
       )
       .map( _.toString )
 
   override def runBonus( input: Input ): Either[String, String] =
     parseInstructions( input )
-      .flatMap(
-        instructions =>
-          instructions.updates
-            .filter( !instructions.isUpdateValid( _ ) )
-            .traverse(
-              invalid => instructions.fixUpdate( invalid ).toRight( s"Could not fix ${invalid.mkString_( ", " )}" )
-            )
+      .flatMap( instructions =>
+        instructions.updates
+          .filter( !instructions.isUpdateValid( _ ) )
+          .traverse( invalid =>
+            instructions.fixUpdate( invalid ).toRight( s"Could not fix ${invalid.mkString_( ", " )}" )
+          )
       )
       .map( fixed => fixed.foldMap( u => middlePageNumber( u.toNev ) ) )
       .map( _.toString )

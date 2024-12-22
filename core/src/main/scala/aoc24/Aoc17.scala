@@ -89,7 +89,7 @@ object Aoc17 extends Puzzle[Either[String, *]]( 17 ) {
   }
 
   object parsers {
-    def endl: Parser[Unit] = Rfc5234.lf | (Rfc5234.cr ~ Rfc5234.lf.rep0).void
+    def endl: Parser[Unit] = Rfc5234.lf | ( Rfc5234.cr ~ Rfc5234.lf.rep0 ).void
 
     val int: Parser[Int] = Numbers.nonNegativeIntString.mapFilter( _.toIntOption )
 
@@ -150,13 +150,13 @@ object Aoc17 extends Puzzle[Either[String, *]]( 17 ) {
 
   lazy val rules: Vector[Rule] = {
     def overlap( s: Int, a0: Int, a1: Int ): Boolean =
-      (a1 & ((1 << (3 - s).max( 0 )) - 1)) == a0 >> s
+      ( a1 & ( ( 1 << ( 3 - s ).max( 0 ) ) - 1 ) ) == a0 >> s
 
-    (for {
+    ( for {
       a0 <- 0 to 7
       s = a0 ^ 1
       a1 <- 0 to 7 if overlap( s, a0, a1 )
-    } yield Rule( a0, a1, s, a0 ^ a1 ^ 7 )).toVector
+    } yield Rule( a0, a1, s, a0 ^ a1 ^ 7 ) ).toVector
   }
 
   case class Constraints( low: List[BigInt], highMask: BigInt, high: BigInt )
@@ -165,12 +165,12 @@ object Aoc17 extends Puzzle[Either[String, *]]( 17 ) {
     rules
       .filter {
         case rule @ Rule( _, _, _, result ) =>
-          result == out && ((rule.value & prev.highMask) == (prev.high & rule.mask))
+          result == out && ( ( rule.value & prev.highMask ) == ( prev.high & rule.mask ) )
       }
       .map {
         case Rule( a0, as, s, _ ) =>
-          val newMask: BigInt = (prev.highMask | 7 << s) >> 3
-          val newHigh: BigInt = (prev.high | as << s) >> 3 & newMask
+          val newMask: BigInt = ( prev.highMask | 7 << s ) >> 3
+          val newHigh: BigInt = ( prev.high | as << s ) >> 3 & newMask
 
           Constraints(
             a0 :: prev.low,

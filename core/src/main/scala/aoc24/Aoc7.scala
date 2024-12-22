@@ -12,7 +12,7 @@ object Aoc7 extends Puzzle[Either[String, *]]( 7 ) {
   case class Operand( value: Long, nextPowerOf10: Long )
   object Operand {
     def of( nonNegativeIntString: String ): Option[Operand] =
-      ( nonNegativeIntString.toLongOption, ("1" + "0" * nonNegativeIntString.length).toLongOption )
+      ( nonNegativeIntString.toLongOption, ( "1" + "0" * nonNegativeIntString.length ).toLongOption )
         .mapN( Operand( _, _ ) )
   }
 

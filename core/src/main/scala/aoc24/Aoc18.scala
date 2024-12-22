@@ -48,15 +48,13 @@ object Aoc18 extends Puzzle[Kleisli[Either[String, *], IsSample, *]]( 18 ) {
 
   case class Grid( dim: V2, obstacles: Set[V2] ) {
     def neighbours( p: V2 ): Vector[V2] =
-      Direction.values.mapFilter(
-        d =>
-          (p |+| d.v).some
-            .filter(
-              q =>
-                q.x >= 0 && q.x < dim.x &&
-                  q.y >= 0 && q.y < dim.y &&
-                  !obstacles( q )
-            )
+      Direction.values.mapFilter( d =>
+        ( p |+| d.v ).some
+          .filter( q =>
+            q.x >= 0 && q.x < dim.x &&
+              q.y >= 0 && q.y < dim.y &&
+              !obstacles( q )
+          )
       )
 
     val start: V2 = V2( 0, 0 )
@@ -91,12 +89,11 @@ object Aoc18 extends Puzzle[Kleisli[Either[String, *], IsSample, *]]( 18 ) {
       .leftMap( err => s"Parser error $err" )
 
   override def run( input: Input ): Kleisli[Either[String, *], IsSample, String] =
-    Kleisli(
-      isSample =>
-        parseBytes( input, Some( oneKilobyte( isSample ) ) )
-          .map( bytes => Grid( gridDim( isSample ), bytes.toSet ) )
-          .flatMap( _.path.toRight( "No path found" ) )
-          .map( _.toString )
+    Kleisli( isSample =>
+      parseBytes( input, Some( oneKilobyte( isSample ) ) )
+        .map( bytes => Grid( gridDim( isSample ), bytes.toSet ) )
+        .flatMap( _.path.toRight( "No path found" ) )
+        .map( _.toString )
     )
 
   def findSplittingByte( bytes: Vector[V2], isSample: IsSample ): V2 = {
@@ -105,7 +102,7 @@ object Aoc18 extends Puzzle[Kleisli[Either[String, *], IsSample, *]]( 18 ) {
       if (bad - good == 1)
         bytes( bad - 1 )
       else {
-        val p: Int = (bad + good) / 2
+        val p: Int = ( bad + good ) / 2
         if (Grid( gridDim( isSample ), bytes.take( p ).toSet ).path.isDefined)
           bisect( p, bad )
         else
@@ -116,10 +113,9 @@ object Aoc18 extends Puzzle[Kleisli[Either[String, *], IsSample, *]]( 18 ) {
   }
 
   override def runBonus( input: Input ): Kleisli[Either[String, *], IsSample, String] =
-    Kleisli(
-      isSample =>
-        parseBytes( input, None )
-          .map( findSplittingByte( _, isSample ) )
-          .map( p => s"${p.x},${p.y}" )
+    Kleisli( isSample =>
+      parseBytes( input, None )
+        .map( findSplittingByte( _, isSample ) )
+        .map( p => s"${p.x},${p.y}" )
     )
 }

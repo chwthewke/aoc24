@@ -56,7 +56,7 @@ object Aoc13 extends Puzzle[IO]( 13 ) {
 //        )
 
       if (det != 0L) {
-        Option.when( paDet % det == 0 && pbDet % det == 0 )( ( (pbDet / det), (paDet / det) ) )
+        Option.when( paDet % det == 0 && pbDet % det == 0 )( ( ( pbDet / det ), ( paDet / det ) ) )
       } else {
         None // TODO, but all actual solutions are determinate lol
       }

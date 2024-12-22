@@ -32,8 +32,8 @@ object Aoc21 extends Puzzle[Either[String, *]]( 21 ) {
   }
 
   sealed abstract class Direction( val v: V2, val repr: Char ) extends EnumEntry {
-    lazy val next: Direction = Direction.values( (Direction.values.indexOf( this ) + 1) % Direction.values.size )
-    lazy val prev: Direction = Direction.values( (Direction.values.indexOf( this ) + 3) % Direction.values.size )
+    lazy val next: Direction = Direction.values( ( Direction.values.indexOf( this ) + 1 ) % Direction.values.size )
+    lazy val prev: Direction = Direction.values( ( Direction.values.indexOf( this ) + 3 ) % Direction.values.size )
   }
 
   object Direction extends Enum[Direction] {
@@ -88,8 +88,8 @@ object Aoc21 extends Puzzle[Either[String, *]]( 21 ) {
     override def keyA: DirpadKey           = DirpadKey.KeyA
   }
 
-  case class Metric[C <: Key with EnumEntry: Order, R: Show: Order: Monoid]( m: Map[( C, C ), R] )(
-      implicit E: KeyEnum[C]
+  case class Metric[C <: Key with EnumEntry: Order, R: Show: Order: Monoid]( m: Map[( C, C ), R] )( implicit
+      E: KeyEnum[C]
   ) {
     override def toString: String =
       m.toVector.sorted
@@ -283,9 +283,9 @@ object Aoc21 extends Puzzle[Either[String, *]]( 21 ) {
     for {
       codes  <- parseCodes( input )
       metric <- costMetricWithDirpadRobots( dirpadRobotCount )
-      result <- codes.foldMapM(
-                 code => metric.measure( code.src ).map( _ * code.value ).toRight( s"Cannot measure ${code.src}" )
-               )
+      result <- codes.foldMapM( code =>
+                  metric.measure( code.src ).map( _ * code.value ).toRight( s"Cannot measure ${code.src}" )
+                )
     } yield result.toString
 
   override def run( input: Input ): Either[String, String] = runWith( 2, input )

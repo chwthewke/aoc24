@@ -25,8 +25,8 @@ object Aoc16 extends Puzzle[Either[String, *]]( 16 ) {
   }
 
   sealed abstract class Direction( val v: V2, val repr: Char ) extends EnumEntry {
-    lazy val next: Direction = Direction.values( (Direction.values.indexOf( this ) + 1) % Direction.values.size )
-    lazy val prev: Direction = Direction.values( (Direction.values.indexOf( this ) + 3) % Direction.values.size )
+    lazy val next: Direction = Direction.values( ( Direction.values.indexOf( this ) + 1 ) % Direction.values.size )
+    lazy val prev: Direction = Direction.values( ( Direction.values.indexOf( this ) + 3 ) % Direction.values.size )
 
   }
   object Direction extends Enum[Direction] {

@@ -55,11 +55,11 @@ object Aoc20 extends Puzzle[Kleisli[Either[String, *], IsSample, *]]( 20 ) {
         }
 
     def cheats20Pico( state: TraversalState ): Vector[( V2, Int )] =
-      (for {
+      ( for {
         dx <- -20 to 20
-        dy <- -(20 - dx.abs) to (20 - dx.abs)
+        dy <- -( 20 - dx.abs ) to ( 20 - dx.abs )
         p = V2( state.pos.x + dx, state.pos.y + dy ) if paths( p )
-      } yield ( p, dx.abs + dy.abs )).toVector
+      } yield ( p, dx.abs + dy.abs ) ).toVector
 
     val part1CheatRule: TraversalState => Vector[( V2, Int )] = cheats2Pico( _ ).tupleRight( 2 )
 
@@ -158,20 +158,18 @@ object Aoc20 extends Puzzle[Kleisli[Either[String, *], IsSample, *]]( 20 ) {
     maze.run( cheatRule ).rangeFrom( threshold ).combineAll
 
   override def run( input: Input ): Kleisli[Either[String, *], IsSample, String] =
-    Kleisli(
-      isSample =>
-        Maze
-          .parse( input )
-          .map( maze => countCheatsBetterThanThreshold( maze, part1Threshold( isSample ), maze.part1CheatRule ) )
-          .map( _.toString )
+    Kleisli( isSample =>
+      Maze
+        .parse( input )
+        .map( maze => countCheatsBetterThanThreshold( maze, part1Threshold( isSample ), maze.part1CheatRule ) )
+        .map( _.toString )
     )
 
   override def runBonus( input: Input ): Kleisli[Either[String, *], IsSample, String] =
-    Kleisli(
-      isSample =>
-        Maze
-          .parse( input )
-          .map( maze => countCheatsBetterThanThreshold( maze, part2Threshold( isSample ), maze.part2CheatRule ) )
-          .map( _.toString )
+    Kleisli( isSample =>
+      Maze
+        .parse( input )
+        .map( maze => countCheatsBetterThanThreshold( maze, part2Threshold( isSample ), maze.part2CheatRule ) )
+        .map( _.toString )
     )
 }

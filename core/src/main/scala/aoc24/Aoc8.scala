@@ -66,12 +66,11 @@ object Aoc8 extends Puzzle[IO]( 8 ) {
     def antennaPairs: Map[Char, IndexedSeq[( Pos, Pos )]] =
       antennas
         .groupMap( _._2 )( _._1 )
-        .fmap(
-          positions =>
-            for {
-              i <- positions.indices
-              j <- positions.indices if i != j
-            } yield ( positions( i ), positions( j ) )
+        .fmap( positions =>
+          for {
+            i <- positions.indices
+            j <- positions.indices if i != j
+          } yield ( positions( i ), positions( j ) )
         )
 
     def antiNodes: Set[Pos] =
@@ -82,12 +81,11 @@ object Aoc8 extends Puzzle[IO]( 8 ) {
     def antennaPairsU: Map[Char, IndexedSeq[( Pos, Pos )]] =
       antennas
         .groupMap( _._2 )( _._1 )
-        .fmap(
-          positions =>
-            for {
-              i <- positions.indices
-              j <- positions.indices.drop( i + 1 )
-            } yield ( positions( i ), positions( j ) )
+        .fmap( positions =>
+          for {
+            i <- positions.indices
+            j <- positions.indices.drop( i + 1 )
+          } yield ( positions( i ), positions( j ) )
         )
 
     def allAntiNodesOf( p: Pos, q: Pos ): Set[Pos] = {
@@ -106,14 +104,13 @@ object Aoc8 extends Puzzle[IO]( 8 ) {
       val antiNodesSet: Set[Pos]        = allAntiNodes
       val antennasByPos: Map[Pos, Char] = antennas.toMap
       0.until( height )
-        .map(
-          j =>
-            0.until( width )
-              .map { i =>
-                val p = Pos( i, j )
-                antennasByPos.getOrElse( p, if (antiNodesSet( p )) '#' else '.' )
-              }
-              .mkString
+        .map( j =>
+          0.until( width )
+            .map { i =>
+              val p = Pos( i, j )
+              antennasByPos.getOrElse( p, if (antiNodesSet( p )) '#' else '.' )
+            }
+            .mkString
         )
         .mkString( "\n" )
     }
@@ -124,7 +121,7 @@ object Aoc8 extends Puzzle[IO]( 8 ) {
     val empty: Parser[Option[Char]]     = Parser.char( '.' ).as( None )
     val frequency: Parser[Option[Char]] = Parser.charWhere( _.isLetterOrDigit ).map( Some( _ ) )
 
-    val row: Parser[NonEmptyList[Option[Char]]] = (empty | frequency).rep
+    val row: Parser[NonEmptyList[Option[Char]]] = ( empty | frequency ).rep
   }
 
   private def parseAntennas( input: Input ): IO[Antennas] =

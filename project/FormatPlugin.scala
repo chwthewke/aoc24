@@ -18,17 +18,26 @@ object FormatPlugin extends AutoPlugin {
     scalafmtGenerateConfig := {
       IO.write(
         file( ".scalafmt.conf" ),
-        """version = "2.0.0"
+        """version = "3.7.17"
+          |runner.dialect = scala213
           |
-          |style = defaultWithAlign
+          |preset = defaultWithAlign
           |maxColumn = 120
           |lineEndings = preserve
           |
           |assumeStandardLibraryStripMargin = true
           |align.arrowEnumeratorGenerator = true
+          |docstrings.style = Asterisk
           |spaces.inParentheses = true
           |
-          |rewrite.rules = [ExpandImportSelectors]
+          |newlines.beforeCurlyLambdaParams = multilineWithCaseOnly
+          |newlines.avoidForSimpleOverflow = [slc]
+          |
+          |rewrite.rules = [Imports]
+          |rewrite.imports.expand = true
+          |
+          |literals.hexPrefix=Lower
+          |literals.hexDigits=Upper
           |""".stripMargin
       )
     },

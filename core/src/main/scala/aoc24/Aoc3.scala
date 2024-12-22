@@ -25,7 +25,7 @@ object Aoc3 extends Puzzle[Either[String, *]]( 3 ) {
       .map( _.toList.sum.toString )
 
   val bonusParser: Parser[NonEmptyList[Either[Boolean, Int]]] =
-    (mulOp.map( Right( _ ) ) | dontOp.as( Left( false ) ) | doOp.as( Left( true ) )).backtrack
+    ( mulOp.map( Right( _ ) ) | dontOp.as( Left( false ) ) | doOp.as( Left( true ) ) ).backtrack
       .orElse( Parser.anyChar.as( 0 ).map( Right( _ ) ) )
       .rep
 
@@ -33,15 +33,14 @@ object Aoc3 extends Puzzle[Either[String, *]]( 3 ) {
     bonusParser
       .parseAll( input.raw )
       .leftMap( err => s"Parser error $err" )
-      .map(
-        list =>
-          list
-            .foldLeft( ( 0, true ) ) {
-              case ( ( acc, flag ), Right( n ) ) if flag => ( acc + n, flag )
-              case ( ( acc, _ ), Left( f ) )             => ( acc, f )
-              case ( z, _ )                              => z
-            }
-            ._1
-            .toString
+      .map( list =>
+        list
+          .foldLeft( ( 0, true ) ) {
+            case ( ( acc, flag ), Right( n ) ) if flag => ( acc + n, flag )
+            case ( ( acc, _ ), Left( f ) )             => ( acc, f )
+            case ( z, _ )                              => z
+          }
+          ._1
+          .toString
       )
 }

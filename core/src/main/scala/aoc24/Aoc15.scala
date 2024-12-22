@@ -72,16 +72,16 @@ object Aoc15 extends Puzzle[Either[String, *]]( 15 ) {
     // looking at a point, None if empty/wall, Some((create, next)) if crate
     type CrateSearch = V2 => Option[( V2, Vector[V2] )]
 
-    val crateSearchLeft: CrateSearch = (p: V2) => {
+    val crateSearchLeft: CrateSearch = ( p: V2 ) => {
       val look: V2 = p |+| Direction.Left.v
       Option.when( crates( look ) )( ( look, Vector( look |+| Direction.Left.v ) ) )
     }
 
-    val crateSearchRight: CrateSearch = (p: V2) => {
+    val crateSearchRight: CrateSearch = ( p: V2 ) => {
       Option.when( crates( p ) )( ( p, Vector( p |+| Direction.Right.v |+| Direction.Right.v ) ) )
     }
 
-    def crateSearchVert( dir: Direction ): CrateSearch = (p: V2) => {
+    def crateSearchVert( dir: Direction ): CrateSearch = ( p: V2 ) => {
       def at( q: V2 ): Option[( V2, Vector[V2] )] =
         Option.when( crates( q ) )( ( q, Vector( q |+| dir.v, q |+| Direction.Right.v |+| dir.v ) ) )
       at( p ).orElse( at( p |+| Direction.Left.v ) )
@@ -92,13 +92,12 @@ object Aoc15 extends Puzzle[Either[String, *]]( 15 ) {
 
       @tailrec
       def go( searched: Vector[V2], acc: Vector[V2] ): WideGrid =
-        searched.foldMapM(
-          p =>
-            Option.when( !walls( p ) )( search( p ).foldMap {
-              case ( crate, searchedNext ) =>
-                //println( show"search $p, found $crate, then searching ${searchedNext.mkString_( ", " )}" )
-                ( Set( crate ), searchedNext.toSet )
-            } )
+        searched.foldMapM( p =>
+          Option.when( !walls( p ) )( search( p ).foldMap {
+            case ( crate, searchedNext ) =>
+              // println( show"search $p, found $crate, then searching ${searchedNext.mkString_( ", " )}" )
+              ( Set( crate ), searchedNext.toSet )
+          } )
         ) match {
           case None => this
           case Some( ( moved, searchedNext ) ) =>
@@ -148,7 +147,7 @@ object Aoc15 extends Puzzle[Either[String, *]]( 15 ) {
 
   object parsers {
 
-    def endl: Parser[Unit] = Rfc5234.lf | (Rfc5234.cr ~ Rfc5234.lf.rep0).void
+    def endl: Parser[Unit] = Rfc5234.lf | ( Rfc5234.cr ~ Rfc5234.lf.rep0 ).void
 
     case class Row( width: Int, walls: Set[V2], crates: Set[V2], robot: Option[V2] )
 
@@ -199,7 +198,7 @@ object Aoc15 extends Puzzle[Either[String, *]]( 15 ) {
       move.rep.repSep( endl ).map( _.flatten ).map( _.toList )
 
     val gridAndInstructions: Parser[( Option[NarrowGrid], List[Direction] )] =
-      (grid ~ moves) <* endl.rep0
+      ( grid ~ moves ) <* endl.rep0
   }
 
   def parseGridAndInstructions( input: Input ): Either[String, ( NarrowGrid, List[Direction] )] =

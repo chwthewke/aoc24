@@ -27,12 +27,12 @@ object Aoc14 extends Puzzle[Kleisli[IO, IsSample, *]]( 14 ) {
 
     def quadrant( dim: V2 ): Option[Int] = {
       // which half? -1 if p < (s-1)/2, 1 if p > (s-1)/2, 0 if p == (s-1)/2
-      def h( p: Int, s: Int ): Int = (2 * p + 1 - s).sign
+      def h( p: Int, s: Int ): Int = ( 2 * p + 1 - s ).sign
 
       // just making sure to return 4 different ints for the quadrants
       ( h( x, dim.x ), h( y, dim.y ) ) match {
         case ( 0, _ ) | ( _, 0 ) => None
-        case ( qx, qy )          => Some( (qx + 1) / 2 + (qy + 1) )
+        case ( qx, qy )          => Some( ( qx + 1 ) / 2 + ( qy + 1 ) )
       }
     }
 
@@ -44,7 +44,7 @@ object Aoc14 extends Puzzle[Kleisli[IO, IsSample, *]]( 14 ) {
   }
 
   case class Robot( pos: V2, vel: V2 ) {
-    def posAt( dt: Int, dim: V2 ): V2 = ((dt *: vel |+| pos) % dim |+| dim) % dim
+    def posAt( dt: Int, dim: V2 ): V2 = ( ( dt *: vel |+| pos ) % dim |+| dim ) % dim
   }
 
   case class SecurityRoom( dim: V2, robots: Vector[Robot] ) {
@@ -72,13 +72,12 @@ object Aoc14 extends Puzzle[Kleisli[IO, IsSample, *]]( 14 ) {
       val counts: Map[V2, Int] =
         robots.map( _.pos ).foldMap( p => Map( p -> 1 ) )
 
-      (0 until dim.y)
-        .map(
-          j =>
-            (0 until dim.x).map { i =>
-              val p = V2( i, j )
-              p.quadrant( dim ).as( counts.get( p ).fold( "." )( _.toString ) ).getOrElse( " " )
-            }.mkString
+      ( 0 until dim.y )
+        .map( j =>
+          ( 0 until dim.x ).map { i =>
+            val p = V2( i, j )
+            p.quadrant( dim ).as( counts.get( p ).fold( "." )( _.toString ) ).getOrElse( " " )
+          }.mkString
         )
         .mkString( "\n" )
     }
@@ -93,12 +92,11 @@ object Aoc14 extends Puzzle[Kleisli[IO, IsSample, *]]( 14 ) {
     def imageOf( room: SecurityRoom ): ImmutableImage =
       ImmutableImage
         .create( room.dim.x, room.dim.y, BufferedImage.TYPE_BYTE_BINARY )
-        .map(
-          pix =>
-            if (room.positions.contains( V2( pix.x, pix.y ) ))
-              Color.WHITE
-            else
-              Color.BLACK
+        .map( pix =>
+          if (room.positions.contains( V2( pix.x, pix.y ) ))
+            Color.WHITE
+          else
+            Color.BLACK
         )
 
     def srcData( image: ImmutableImage ): String =
@@ -117,30 +115,29 @@ object Aoc14 extends Puzzle[Kleisli[IO, IsSample, *]]( 14 ) {
         .parEvalMap( 8 )( i => IO.blocking( div( htmlImageOf( room, i ) ) ) )
         .compile
         .toVector
-        .map(
-          images =>
-            doctype( "HTML" )(
-              html(
-                head( tags2.title( s"AoC 14 - page $pn" ) ),
-                body(
-                  div(
-                    display.flex,
-                    a(
-                      href := (pn - 1).toString,
-                      Option.when( pn == 0 )( disabled ),
-                      strong( "PREVIOUS" )
-                    ),
-                    div( flexGrow := "1" ),
-                    a( href := (pn + 1).toString, strong( "NEXT" ) )
+        .map( images =>
+          doctype( "HTML" )(
+            html(
+              head( tags2.title( s"AoC 14 - page $pn" ) ),
+              body(
+                div(
+                  display.flex,
+                  a(
+                    href := ( pn - 1 ).toString,
+                    Option.when( pn == 0 )( disabled ),
+                    strong( "PREVIOUS" )
                   ),
-                  div(
-                    display.flex,
-                    flexWrap.wrap,
-                    images
-                  )
+                  div( flexGrow := "1" ),
+                  a( href       := ( pn + 1 ).toString, strong( "NEXT" ) )
+                ),
+                div(
+                  display.flex,
+                  flexWrap.wrap,
+                  images
                 )
               )
             )
+          )
         )
     }
   }
@@ -190,17 +187,15 @@ object Aoc14 extends Puzzle[Kleisli[IO, IsSample, *]]( 14 ) {
       .map( SecurityRoom( roomDimensions( isSample ), _ ) )
 
   override def run( input: Input ): Kleisli[IO, IsSample, String] =
-    Kleisli(
-      isSample =>
-        parseRobots( input, isSample )
-          .map( _.securityRating( 100 ) )
-          .map( _.toString )
+    Kleisli( isSample =>
+      parseRobots( input, isSample )
+        .map( _.securityRating( 100 ) )
+        .map( _.toString )
     )
 
   override def runBonus( input: Input ): Kleisli[IO, IsSample, String] =
-    Kleisli(
-      isSample =>
-        parseRobots( input, isSample )
-          .flatMap( new HttpServer( _ ).run )
+    Kleisli( isSample =>
+      parseRobots( input, isSample )
+        .flatMap( new HttpServer( _ ).run )
     )
 }

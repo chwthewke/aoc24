@@ -36,19 +36,19 @@ object Main extends IOApp {
       Aoc19,
       Aoc20,
       Aoc21
-    ).map( p => ( p.puzzle.n, p ) ).toMap
+    ).map( p => ( p.puzzle.puzzleNumber, p ) ).toMap
 
   def loadInput[G[_]]( puzzle: Puzzle[G], useSample: Boolean, runBonus: Boolean ): IO[Input] =
-    (if (useSample) Loader.samples else Loader.inputs).load[IO]( puzzle, runBonus )
+    ( if (useSample) Loader.samples else Loader.inputs ).load[IO]( puzzle, runBonus )
 
   def runPuzzle( n: Int, useSample: Boolean, runBonus: Boolean ): IO[String] =
     for {
       puzzle <- puzzles.get( n ).toRight( new RuntimeException( s"Puzzle #$n not found" ) ).liftTo[IO]
       input  <- loadInput( puzzle.puzzle, useSample, runBonus )
       result <- (
-                 if (runBonus) puzzle.runBonus( input, IsSample( useSample ) )
-                 else puzzle.run( input, IsSample( useSample ) )
-               ).timeout( puzzle.puzzle.timeout )
+                  if (runBonus) puzzle.runBonus( input, IsSample( useSample ) )
+                  else puzzle.run( input, IsSample( useSample ) )
+                ).timeout( puzzle.puzzle.timeout )
     } yield result
 
   override def run( args: List[String] ): IO[ExitCode] =
@@ -62,11 +62,11 @@ object Main extends IOApp {
           s      <- clock.monotonic
           result <- runPuzzle( n, useSample, runBonus ).attempt
           e      <- clock.monotonic
-          _      <- console.errorln( show"[${(e - s).toMillis} ms]" )
+          _      <- console.errorln( show"[${( e - s ).toMillis} ms]" )
           code <- result.fold(
-                   err => console.printStackTrace( err ).as( ExitCode.Error ),
-                   str => console.println( str ).as( ExitCode.Success )
-                 )
+                    err => console.printStackTrace( err ).as( ExitCode.Error ),
+                    str => console.println( str ).as( ExitCode.Success )
+                  )
         } yield code
       case _ =>
         IO.println( "Invalid arguments" ).as( ExitCode.Error )

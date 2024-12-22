@@ -21,7 +21,7 @@ object Aoc6 extends Puzzle[IO]( 6 ) {
   }
   sealed abstract class Direction( val dXY: Pos ) extends EnumEntry {
     def next: Direction =
-      Direction.values( (1 + Direction.values.indexOf( this )) % Direction.values.size )
+      Direction.values( ( 1 + Direction.values.indexOf( this ) ) % Direction.values.size )
   }
 
   object Direction extends Enum[Direction] {

@@ -90,8 +90,8 @@ object Aoc10 extends Puzzle[IO]( 10 ) {
     input.lines.toNev
       .liftTo[IO]( new RuntimeException( "no rows in input" ) )
       .flatMap(
-        _.traverse(
-          r => parsers.row.parseAll( r ).leftMap( err => new RuntimeException( s"Parser error $err" ) ).liftTo[IO]
+        _.traverse( r =>
+          parsers.row.parseAll( r ).leftMap( err => new RuntimeException( s"Parser error $err" ) ).liftTo[IO]
         )
       )
       .map( Grid )

@@ -10,7 +10,7 @@ abstract class RunnablePuzzle {
 
   val puzzle: Puzzle[Eff]
 
-  final def n: Int = puzzle.n
+  final def n: Int = puzzle.puzzleNumber
 
   final def run( input: Input, isSample: IsSample ): IO[String] = runner.run( puzzle.run( input ), isSample )
 

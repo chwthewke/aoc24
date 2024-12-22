@@ -74,13 +74,13 @@ object Aoc12 extends Puzzle[Either[String, *]]( 12 ) {
     type FencePos = ( Pos, Direction )
 
     def fences( region: Set[Pos] ): Set[FencePos] =
-      region.unorderedFoldMap(
-        p => Direction.values.mapFilter( d => Option.when( !region( d.move( p ) ) )( ( p, d ) ) ).toSet
+      region.unorderedFoldMap( p =>
+        Direction.values.mapFilter( d => Option.when( !region( d.move( p ) ) )( ( p, d ) ) ).toSet
       )
 
     def fenceNeighbours( fencePos: FencePos ): Vector[FencePos] = fencePos match {
-      case ( p, d @ (Direction.Left | Direction.Right) ) => Vector( ( p.up, d ), ( p.down, d ) )
-      case ( p, d @ (Direction.Up | Direction.Down) )    => Vector( ( p.left, d ), ( p.right, d ) )
+      case ( p, d @ ( Direction.Left | Direction.Right ) ) => Vector( ( p.up, d ), ( p.down, d ) )
+      case ( p, d @ ( Direction.Up | Direction.Down ) )    => Vector( ( p.left, d ), ( p.right, d ) )
     }
 
     def sides( region: Set[Pos] ): Vector[Set[( Pos, Direction )]] =
