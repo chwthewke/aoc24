@@ -25,7 +25,7 @@ abstract class PuzzleSpec( puzzle: RunnablePuzzle, expectedBasic: String, expect
     puzzle.runBonus( input, isSample )
 
   def runPuzzle( bonus: Boolean, isSample: IsSample = IsSample( true ) ): IO[String] =
-    (if (isSample.value) loadSampleInput( bonus ) else loadRealInput( bonus ))
+    ( if (isSample.value) loadSampleInput( bonus ) else loadRealInput( bonus ) )
       .flatMap( in => if (bonus) runBonus( puzzle, in, isSample ) else run( puzzle, in, isSample ) )
 
   protected def loadSampleInput( runBonus: Boolean = false ): IO[Input] =
@@ -71,6 +71,13 @@ abstract class PuzzleSpec( puzzle: RunnablePuzzle, expectedBasic: String, expect
 
   def parseTheSampleLines[A]( parser: Parser[A], bonus: Boolean = false ): Unit =
     parseTheSample[A, Vector[A]]( ( input, parser ) => input.lines.traverse( parser.parseAll ), parser, bonus )
+
+  def parseTheSampleLinesAs[A]( parser: Parser[A], bonus: Boolean = false )(
+      assertion: PartialFunction[Vector[A], Assertion]
+  ): Unit =
+    parseTheSampleAs[A, Vector[A]]( ( input, parser ) => input.lines.traverse( parser.parseAll ), parser, bonus )(
+      assertion
+    )
 
   def parseTheTrimmedSample[A]( parser: Parser[A], bonus: Boolean = false ): Unit =
     parseTheSample[A, A]( ( input, parser ) => parser.parseAll( input.trimmed ), parser, bonus )
