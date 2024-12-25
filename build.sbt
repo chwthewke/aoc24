@@ -17,7 +17,7 @@ val `aoc24-core` = project
   .settings( libraryDependencies ++= kindProjector )
   .settings(
     libraryDependencies ++= cats ++ catsEffect ++ catsFree ++ catsParse ++ kittens ++ enumeratum ++ algebra ++ scrimage
-      ++ scalatags ++ fs2 ++ http4sEmberServer ++ http4sScalatags ++ http4s
+      ++ scalatags ++ fs2 ++ http4sEmberServer ++ http4sScalatags ++ http4s ++ asciiGraphs
   )
   .enablePlugins( SbtBuildInfoPlugin, ScalacPlugin )
 
